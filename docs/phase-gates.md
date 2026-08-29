@@ -63,6 +63,22 @@ xin giới thiệu 1 khoa cấp cứu, hạn 01/09 và 05/09.
 | Tách R và A khi đủ người | ✅ Tách ở **3/6** hàng (T3, T4, T5). Ba hàng còn lại R ≡ A, có ghi lý do và bù bằng **C bắt buộc là người ngoài đội** ở T1 và T6 |
 | Stakeholder Trang 1 xuất hiện hợp lý trong RACI | ✅ S5, S1, S4 là ba cột thật trong ma trận |
 
+### 6 việc của nhóm phủ đúng danh sách việc mà đề bài gợi ý
+
+Đề bài (Phase 2.4) nêu 6 loại công việc mẫu. Nhóm **không copy nguyên danh sách đó** mà dịch từng loại sang
+đúng việc thật của MedTriage AI trong 1–2 tháng tới — bảng dưới cho thấy độ phủ:
+
+| Việc mẫu của đề bài | Việc tương ứng của nhóm | A |
+|---|---|---|
+| Xác định use case | **T1** — chốt phạm vi shadow pilot & thuyết phục BV A (chính là chốt use case *nào* được chạy, ở ca trực nào) | Việt |
+| Xây MVP | **T2** — dựng kiosk nhập liệu tay + pipeline khử PII trong VPC bệnh viện | Hưng |
+| Chuẩn bị dữ liệu | **T3** — 30 golden cases có nhãn do người hành nghề y chốt + bộ nhãn 420 ca | Linh |
+| Kiểm thử | **T4** — đo under-triage & containment, chạy eval trước mỗi lần release | Linh |
+| Demo / Pilot | **T5** — vận hành shadow pilot 2 tuần tại khoa (uptime, thu ca, trực tại chỗ) | Hưng |
+| Quyết định release | **T6** — quyết định GO / FIX tại cổng gác ngày 30 và kích hoạt R-02 / R-03 | Việt |
+
+**Phủ 6/6 loại việc**, và mỗi loại chỉ có **một** việc — không tách nhỏ để bảng trông nhiều hơn.
+
 **→ QUA GATE 2.**
 
 ---

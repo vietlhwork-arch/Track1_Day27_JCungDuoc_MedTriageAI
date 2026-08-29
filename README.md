@@ -40,6 +40,7 @@ phần **cá nhân** với phần **nhóm**, và mở lại nguồn HTML đã si
 | [`docs/individual/2A202601789-TranVuongHung.md`](docs/individual/2A202601789-TranVuongHung.md) | Bài làm **cá nhân** của Hưng. |
 | [`docs/phase-gates.md`](docs/phase-gates.md) | Tự soi lỗi Phase 5: đối chiếu từng ô của **GATE 0 → GATE 5** và bảng consistency giữa 4 trang. |
 | [`docs/ai-usage.md`](docs/ai-usage.md) | Nhóm đã dùng AI vào việc gì và **cố ý không dùng vào việc gì** (mục 9 của đề bài). |
+| [`docs/weekly/`](docs/weekly/) | Nơi chứa **dấu hiệu hoàn thành của hành động G-3**: 4 biên bản review thứ Sáu, đã có sẵn lịch 4 buổi và mẫu biên bản để Growth Plan chạy được ngay từ buổi đầu **05/09/2026**. |
 | [`docs/source/day27-lab.html`](docs/source/day27-lab.html) | Mã nguồn HTML sinh ra file PDF. Mở bằng trình duyệt là xem được, không cần mạng. |
 
 ### Tái tạo lại file PDF
@@ -101,6 +102,17 @@ chrome --headless --disable-gpu --no-pdf-header-footer \
 - [x] README ghi đủ tên team, thành viên và tên dự án.
 - [x] Repo mở quyền truy cập để giảng viên có thể xem.
 - [x] **Trưởng nhóm** (Lê Hoàng Việt) gửi **link GitHub repository của team** để nộp bài; các thành viên không tạo hoặc nộp repo riêng.
+
+### Sáu gate đánh giá (Rubric) — nhóm tự đối chiếu
+
+| Gate | Đạt khi | Dấu hiệu chưa đạt | Nhóm tự chấm — bằng chứng ở đâu |
+|---|---|---|---|
+| **0. Scope (phạm vi)** | Cùng một dự án, mục tiêu và owner tổng hợp rõ ràng | Mỗi thành viên đang hiểu Lab theo một phạm vi khác nhau | ✅ Khối **Phase 0** trên Trang 1: một dự án (MedTriage AI), một mục tiêu (cổng gác ngày 30 — 27/09/2026), một người tổng hợp (Việt). |
+| **1. Stakeholder** | ≥ 6 stakeholder cụ thể, map Influence × Interest, dùng được Champion / Blocker / Supporter / Bystander và có stance + chiến lược hành động | Chỉ gắn nhãn theo quadrant mà không kiểm stance thực tế; stakeholder chung chung; không có action | ✅ **10** stakeholder, đủ 4 nhãn, stance chấm riêng (2 Ủng hộ · 5 Trung lập · 3 Chưa ủng hộ). Nêu thẳng **2 chỗ stance lệch nhãn quadrant** (S1, S3) — đúng cái rubric đòi. 4 hành động đều có owner + deadline có ngày. |
+| **2. Pitch & RACI** | Pitch có conclusion + evidence + small ask; mỗi task có 1 A | Pitch kể dài, hứa quá bằng chứng, RACI có nhiều A hoặc không có A | ✅ Pitch nửa trang, kết luận ở dòng đầu, có khối **"Điều nhóm CHƯA có"** để không hứa vượt bằng chứng. RACI **6/6 hàng đúng 1 A** (đã kiểm bằng script), A chia đều 2–2–2. |
+| **3. AI Team Design** | Architecture có lý do, role phù hợp, có capability gap + Priority Resourcing | Liệt kê quá nhiều chức danh, không nói vì sao cần, chỉ biết "tuyển thêm người" | ✅ Embedded có lý do **và** có điều kiện hết hạn (≥3 bệnh viện, ≥6 người). 3 gap → **Partner / Outsource / Partner**, **không gap nào giải bằng Hire** và có nói vì sao. Vai trò thứ tư để trống, gọi đúng tên là gap. |
+| **4. Team Health & Growth** | Có health score, vấn đề ưu tiên, competency cần nâng, plan 30 ngày có owner / deadline | Plan chung chung, không đo được, không ai chịu trách nhiệm | ✅ 4 khía cạnh × 3 điểm cá nhân, thấp nhất 2,3/5, chênh lớn nhất 2 điểm và **truy ra nguyên nhân**. 3 hành động đủ owner + deadline + dấu hiệu hoàn thành kiểm được, owner **khớp đúng người giữ chữ A** trong RACI. |
+| **5. Nộp bài** | Repo đúng cấu trúc, có `README.md` + PDF tối đa 4 trang, link repo truy cập được | Nộp file rời, thiếu README/PDF, repo không truy cập được hoặc sai cấu trúc | ✅ Repo đúng tên, có `README.md` + **đúng 01** PDF **4 trang A4**. Bản đối chiếu đầy đủ từng ô ở [`docs/phase-gates.md`](docs/phase-gates.md). |
 
 ---
 
