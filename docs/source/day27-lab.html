@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Day27 — AI Team Lab — JCungDuoc — MedTriage AI</title>
+<style>
+@page { size: A4; margin: 8mm 9mm 7mm 9mm; }
+* { box-sizing: border-box; margin:0; padding:0; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body {
+  font-family: "Segoe UI", "Arial", sans-serif;
+  font-size: 7.6pt; line-height: 1.28; color: #16202b; background:#fff;
+}
+.page { width: 192mm; height: 281mm; page-break-after: always; position: relative; overflow: hidden; }
+.page:last-child { page-break-after: auto; }
+
+.ph { display:flex; align-items:flex-end; justify-content:space-between;
+      border-bottom: 1.6pt solid #0f3d5c; padding-bottom: 1.6mm; margin-bottom: 2.4mm; }
+.ph h1 { font-size: 12.4pt; color:#0f3d5c; letter-spacing:-.2px; line-height:1.2; }
+.ph h1 span { font-weight:400; color:#5b7285; font-size:8.4pt; }
+.ph .meta { text-align:right; font-size:6.5pt; color:#5b7285; line-height:1.35; white-space:nowrap; }
+.ph .meta b { color:#0f3d5c; }
+
+h2 { font-size:8.4pt; color:#0f3d5c; text-transform:uppercase; letter-spacing:.5px;
+     border-left:2.6pt solid #17a2b8; padding-left:2mm; margin:2.6mm 0 1.4mm; }
+h3 { font-size:7.4pt; color:#1a4d6d; margin:1.4mm 0 .9mm; }
+p { margin-bottom:1mm; }
+
+table { width:100%; border-collapse:collapse; font-size:6.9pt; }
+th { background:#0f3d5c; color:#fff; font-weight:600; text-align:left;
+     padding:1.1mm 1.3mm; border:.4pt solid #0f3d5c; font-size:6.6pt; line-height:1.2;}
+td { padding:1mm 1.3mm; border:.4pt solid #c3d2dd; vertical-align:top; }
+tbody tr:nth-child(even) td { background:#f4f8fa; }
+td.c, th.c { text-align:center; }
+
+.b { display:inline-block; padding:.15mm 1.1mm; border-radius:2.5px; font-size:6.1pt;
+     font-weight:700; line-height:1.45; white-space:nowrap; }
+.champ{background:#0d8050;color:#fff}.block{background:#c0392b;color:#fff}
+.supp{background:#2374ab;color:#fff}.byst{background:#8d9aa5;color:#fff}
+.up{background:#d7f0e2;color:#0d6b45;border:.4pt solid #0d8050}
+.neu{background:#fdf0d5;color:#8a5b00;border:.4pt solid #d99b12}
+.no{background:#fbdedb;color:#98281c;border:.4pt solid #c0392b}
+.tag{background:#eaf1f6;color:#0f3d5c;border:.4pt solid #a9c1d3;font-weight:600}
+.raci { display:inline-block; width:5.6mm; text-align:center; border-radius:2px;
+        font-size:6.4pt; font-weight:700; line-height:1.6; }
+.rr{background:#0f3d5c;color:#fff}.ra{background:#c0392b;color:#fff}
+.rc{background:#cfe9ee;color:#0b5c68}.ri{background:#eef2f5;color:#61717e}
+
+.quad { display:grid; grid-template-columns: 9mm 1fr 1fr; grid-template-rows: 4mm 36mm 30mm; gap:0; margin-bottom:1.4mm; }
+.qlab { display:flex; align-items:center; justify-content:center; font-size:6.3pt;
+        font-weight:700; color:#5b7285; text-transform:uppercase; letter-spacing:.4px; }
+.qy { writing-mode:vertical-rl; transform:rotate(180deg); }
+.qc { border:.5pt solid #c3d2dd; padding:1.2mm; }
+.qc .qt { font-size:6.3pt; font-weight:700; margin-bottom:.9mm; }
+.qc ul { list-style:none; }
+.qc li { font-size:6.4pt; padding:.35mm 0 .35mm 2.2mm; position:relative; line-height:1.25; }
+.qc li:before { content:"\25AA"; position:absolute; left:0; color:#8d9aa5; }
+.q-hi-lo{background:#fdf6f5}.q-hi-hi{background:#f2faf6}
+.q-lo-lo{background:#f7f9fa}.q-lo-hi{background:#f4f8fc}
+
+.box { border:.5pt solid #c3d2dd; border-left:2.4pt solid #17a2b8; background:#f7fafc;
+       padding:1.4mm 1.8mm; margin-bottom:1.4mm; }
+.box.warn { border-left-color:#d99b12; background:#fffbf2; }
+.box.dark { background:#0f3d5c; color:#fff; border-color:#0f3d5c; border-left-color:#17a2b8; }
+.box.dark b { color:#8fe3ef; }
+.box .bt { font-size:6.7pt; font-weight:700; color:#0f3d5c; text-transform:uppercase;
+           letter-spacing:.4px; margin-bottom:.7mm; }
+.box.dark .bt { color:#8fe3ef; }
+.kv { font-size:6.8pt; }
+.kv b { color:#0f3d5c; }
+.box.dark .kv b { color:#8fe3ef; }
+.two { display:grid; grid-template-columns:1fr 1fr; gap:2mm; }
+ol.tight, ul.tight { padding-left:3.6mm; }
+ol.tight li, ul.tight li { margin-bottom:.6mm; }
+
+.pitch { border:.6pt solid #0f3d5c; }
+.pitch .prow { display:grid; grid-template-columns:22mm 1fr; border-bottom:.4pt solid #c3d2dd; }
+.pitch .prow:last-child { border-bottom:0; }
+.pitch .pl { background:#0f3d5c; color:#fff; font-weight:700; font-size:6.6pt;
+             padding:1.2mm; text-transform:uppercase; letter-spacing:.3px; }
+.pitch .pv { padding:1.2mm 1.6mm; font-size:6.9pt; }
+
+.pf { position:absolute; bottom:0; left:0; right:0; border-top:.5pt solid #c3d2dd;
+      padding-top:.9mm; font-size:5.9pt; color:#8d9aa5; }
+.pf .gate { display:block; color:#0d8050; font-weight:700; margin-bottom:.5mm; line-height:1.3; }
+.pf .row { display:flex; justify-content:space-between; }
+
+.bar { display:inline-block; width:11mm; height:2.2mm; background:#e3ebf0; vertical-align:middle;
+       border-radius:1px; overflow:hidden; }
+.bar i { display:block; height:100%; background:#0d8050; }
+.bar i.low { background:#c0392b; }
+.bar i.mid { background:#d99b12; }
+</style>
+</head>
+<body>
+
+<!-- ============================ PAGE 1 ============================ -->
+<div class="page">
+  <div class="ph">
+    <h1>Trang 1 — Stakeholder Map &amp; Strategy<br><span>MedTriage AI · Trợ lý tiếp nhận &amp; phân loại cấp cứu · Track 1 · Day 27</span></h1>
+    <div class="meta">
+      <b>Nhóm JCungDuoc</b><br>
+      Lê Hoàng Việt 2A202601543 (trưởng nhóm) · Hồ Phạm Đức Linh 2A202601533<br>
+      Trần Vương Hưng 2A202601789<br>
+      Ngày làm Lab <b>29/08/2026</b> · Giai đoạn <b>tiền pilot — 0 ca thật</b>
+    </div>
+  </div>
+
+  <div class="box dark" style="margin-bottom:2mm">
+    <div class="bt">Phase 0 — Scope đã chốt · GATE 0</div>
+    <span class="kv"><b>Dự án:</b> MedTriage AI — AI agent trò chuyện với bệnh nhân ở hàng chờ cấp cứu để thu thập triệu chứng, phát hiện red flag
+    và sinh phiếu bàn giao SBAR cho điều dưỡng. <b>AI đề xuất — điều dưỡng ký và quyết định.</b> Mô hình B2B, khách hàng là bệnh viện. &nbsp;•&nbsp;
+    <b>Mục tiêu 1–3 tháng:</b> qua cổng gác ngày 30 (<b>27/09/2026</b>) — đo containment <b>≥70%</b> trên <b>≥800 ca hoàn tất thật</b> tại một khoa cấp cứu,
+    tức thay con số ước tính 78% bằng số đo. &nbsp;•&nbsp; <b>Người tổng hợp:</b> Lê Hoàng Việt. &nbsp;•&nbsp; <b>Format:</b> Markdown + HTML → PDF trên GitHub repo chung của nhóm.</span>
+  </div>
+
+  <h2>1. Stakeholder Map — Influence × Interest (10 stakeholder)</h2>
+  <div class="quad">
+    <div></div>
+    <div class="qlab">Interest thấp</div>
+    <div class="qlab">Interest cao</div>
+
+    <div class="qlab qy">Influence cao</div>
+    <div class="qc q-hi-lo">
+      <div class="qt"><span class="b block">BLOCKER</span> &nbsp;giữ hài lòng, xử lý mối lo</div>
+      <ul>
+        <li><b>S2 · Ban Giám đốc + Phòng Tài chính–Kế toán BV A</b> — người ký hợp đồng và duyệt ngân sách <span class="b no">Chưa ủng hộ</span></li>
+        <li><b>S4 · Trưởng phòng CNTT / quản trị HIS BV A</b> — chủ HL7, chủ VPC, chủ dữ liệu bệnh nhân <span class="b no">Chưa ủng hộ</span></li>
+        <li><b>S9 · Hội đồng Quản lý chất lượng &amp; đạo đức BV A</b> — duyệt mọi thử nghiệm chạm tới người bệnh <span class="b neu">Trung lập</span></li>
+        <li><b>S7 · Nhà cung cấp HIS đương nhiệm của BV A</b> — vừa là cửa tích hợp, vừa là kênh phân phối Plan B <span class="b neu">Trung lập</span></li>
+      </ul>
+    </div>
+    <div class="qc q-hi-hi">
+      <div class="qt"><span class="b champ">CHAMPION</span> &nbsp;làm việc chặt chẽ, tận dụng sự ủng hộ</div>
+      <ul>
+        <li><b>S1 · Trưởng khoa Cấp cứu BV A</b> — người duy nhất cho phép sản phẩm xuất hiện trong khoa <span class="b neu">Trung lập</span> &nbsp;⚠ <b>lệch nhãn</b></li>
+        <li><b>S5 · Giảng viên / mentor Track 1</b> — review dự án liên tục từ Day 22 đến Day 27, là cửa giới thiệu bệnh viện <span class="b up">Ủng hộ</span></li>
+      </ul>
+    </div>
+
+    <div class="qlab qy">Influence thấp</div>
+    <div class="qc q-lo-lo">
+      <div class="qt"><span class="b byst">BYSTANDER</span> &nbsp;chỉ theo dõi</div>
+      <ul>
+        <li><b>S10 · Quỹ ươm tạo / nhà đầu tư thiên thần</b> — nhóm <i>chưa</i> gọi vốn ở giai đoạn này, nên đây là stakeholder thật nhưng hiện chưa có ảnh hưởng lẫn quan tâm. Chỉ theo dõi, không tốn thời gian trước cổng ngày 90 <span class="b neu">Trung lập</span></li>
+      </ul>
+    </div>
+    <div class="qc q-lo-hi">
+      <div class="qt"><span class="b supp">SUPPORTER</span> &nbsp;giữ thông tin, khai thác feedback</div>
+      <ul>
+        <li><b>S3 · Điều dưỡng tiếp nhận (triage nurse)</b> — người dùng thật, người ký phiếu SBAR <span class="b no">Chưa ủng hộ</span> &nbsp;⚠ <b>lệch nhãn</b></li>
+        <li><b>S8 · Bệnh nhân &amp; người nhà ở hàng chờ</b> — người bị ảnh hưởng trực tiếp bởi kết quả phân loại <span class="b neu">Trung lập</span></li>
+        <li><b>S6 · Cố vấn tài chính ngoài công ty</b> — người ngoài đội đã nhận dự cổng gác ngày 90 <span class="b up">Ủng hộ</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="box warn" style="margin-bottom:2mm">
+    <div class="bt">Hai chỗ stance thực tế không khớp nhãn quadrant — nhóm ghi theo thực tế, không ghi theo nhãn</div>
+    <span class="kv"><b>S1</b> nằm ô Champion vì ảnh hưởng cao và quan tâm cao, <b>nhưng stance thật là Trung lập</b>: đến 29/08/2026 nhóm chưa có một chữ ký
+    hay một email đồng ý nào. Gọi S1 là champion lúc này là tự trấn an, và sẽ dẫn tới việc bỏ qua bước thuyết phục. &nbsp;•&nbsp;
+    <b>S3</b> nằm ô Supporter, <b>nhưng stance thật là Chưa ủng hộ</b>: điều dưỡng tiếp nhận lo bị thay thế và lo phải làm thêm thao tác giữa ca trực quá tải.
+    Nhãn "influence thấp" chỉ đúng trên bàn ký kết — <b>trên thực địa S3 có quyền phủ quyết tuyệt đối</b>, vì theo quy định hành nghề, phiếu SBAR không có giá trị nếu điều dưỡng không ký.</span>
+  </div>
+
+  <h2>2. Bốn stakeholder ưu tiên &amp; chiến lược 1–2 tuần tới</h2>
+  <table>
+    <thead><tr>
+      <th style="width:18%">Stakeholder</th><th style="width:19%">Họ quan tâm điều gì?</th>
+      <th style="width:26%">Họ giúp hoặc cản dự án thế nào?</th><th style="width:37%">Hành động cụ thể (owner · deadline)</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td><b>S5 · Giảng viên / mentor Track 1</b><br><span class="b up">Ủng hộ</span> <span class="b tag">Tận dụng</span></td>
+        <td>Nhóm có dám mang mô hình ra thực địa hay chỉ dừng ở tài liệu đẹp; số liệu có trung thực không.</td>
+        <td><b>Giúp:</b> review bản đề nghị trước khi nhóm gửi bệnh viện, và giới thiệu một khoa cấp cứu có thể nhận pilot.
+            <b>Cản:</b> nếu thấy nhóm hứa vượt bằng chứng, mentor sẽ ngừng giới thiệu — mà đây là cửa vào bệnh viện duy nhất nhóm đang có.</td>
+        <td>Gửi mentor <b>bản đề nghị shadow 1 trang + dashboard 8 đèn của Day 26</b> (giữ nguyên 4/8 đèn ghi "chưa đo", không tô hồng), xin 20 phút review
+            và <b>xin giới thiệu 1 khoa cấp cứu</b>.<br>→ <b>Việt · gửi 01/09 · họp xong trước 05/09/2026</b></td>
+      </tr>
+      <tr>
+        <td><b>S6 · Cố vấn tài chính ngoài công ty</b><br><span class="b up">Ủng hộ</span> <span class="b tag">Tận dụng</span></td>
+        <td>Mô hình kinh tế có chịu nổi số đo thật không; mâu thuẫn CAC giữa Day 24 (60 tr ₫) và Day 25 (12.000 $) — chênh 5,2 lần.</td>
+        <td><b>Giúp:</b> là người ngoài duy nhất đã nhận dự cổng gác — chính là thứ chặn nhóm vừa đặt ngưỡng vừa tự báo cáo số.
+            <b>Cản:</b> nếu không chốt lịch ngay, cổng gác lại chỉ còn ba người trong nhóm ngồi với nhau.</td>
+        <td>Chốt <b>lịch cứng cho 3 cổng gác 27/09 · 27/10 · 26/11</b> và gửi trước <b>một câu hỏi phản biện</b>: "nếu containment thật rơi về 70% thì cắt gì đầu tiên?".
+            <br>→ <b>Việt · lịch chốt trước 08/09/2026</b></td>
+      </tr>
+      <tr>
+        <td><b>S1 · Trưởng khoa Cấp cứu BV A</b><br><span class="b no">Chưa ủng hộ</span> <span class="b tag">Thuyết phục</span></td>
+        <td>Không làm chậm hàng chờ, không tăng việc cho điều dưỡng, không phát sinh rủi ro pháp lý cho khoa.</td>
+        <td><b>Giúp:</b> chữ ký của S1 là thứ duy nhất mở được 800 ca thật cho cổng ngày 30.
+            <b>Cản:</b> S1 nói không thì toàn bộ mốc 27/09 đổ, và hiện nhóm không có bệnh viện B nào đang chờ.</td>
+        <td>Gửi <b>đề nghị shadow mode 2 tuần, ca trực ngày 7h–15h</b>: AI không hiển thị bậc ưu tiên cho bất kỳ ai, chỉ sinh SBAR song song để khoa đối chiếu.
+            <b>Không hợp đồng · không nối HIS · không ngân sách.</b> Xin 45 phút với điều dưỡng trưởng ca để chốt luồng.
+            <br>→ <b>Việt · gửi 03/09 · chốt ngày bắt đầu trước 12/09/2026</b></td>
+      </tr>
+      <tr>
+        <td><b>S3 · Điều dưỡng tiếp nhận</b><br><span class="b no">Chưa ủng hộ</span> <span class="b tag">Thuyết phục</span></td>
+        <td>Ca trực đã quá tải; sợ bị thay thế; sợ phải ký một phiếu do máy viết mà mình không kiểm được.</td>
+        <td><b>Giúp:</b> là người duy nhất chốt được nhãn đúng cho bộ eval — đúng thứ nhóm đang thiếu hoàn toàn.
+            <b>Cản:</b> chỉ cần không ký SBAR là containment về 0, dù model tốt đến đâu.</td>
+        <td>Mời <b>1 điều dưỡng trưởng ca làm người chốt nhãn cho 30 golden cases</b>, <b>trả công theo buổi</b>, tên được ghi trong tài liệu eval.
+            Đổi vai từ "người bị thay thế" thành "người ra đề cho AI".
+            <br>→ <b>Linh · buổi gán nhãn đầu tiên trước 12/09/2026</b></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box" style="margin-top:1.6mm">
+    <div class="bt">Vì sao chọn đúng bốn người này mà không phải S2 hay S4</div>
+    <span class="kv">S2 (ký hợp đồng) và S4 (mở HL7) đều là Blocker ảnh hưởng cao, nhưng <b>cả hai chỉ chặn giai đoạn <i>sau</i> shadow</b>.
+    Đề nghị ở trên được thiết kế để <b>không cần chữ ký của S2 và không cần S4 mở HL7</b>: nhóm dùng kiosk nhập tay đặt ở hàng chờ, dữ liệu khử PII trước khi rời VPC bệnh viện.
+    Kéo S2 và S4 vào hai tuần này là tự dựng thêm hai cửa phải xin phép <i>trước khi</i> có bất kỳ con số nào để nói. S4 được kích hoạt ngay sau cổng ngày 30 — xem Trang 3, capability gap <b>G-2</b>.</span>
+  </div>
+
+  <div class="pf"><span class="gate">GATE 1 ✔ 10 stakeholder cụ thể · map theo Influence × Interest · stance riêng từng người · 4 hành động có owner + deadline</span><div class="row"><span>MedTriage AI · Nhóm JCungDuoc · Day 27 — AI Team Lab</span><span>Trang 1 / 4</span></div></div>
+</div>
+
+<!-- ============================ PAGE 2 ============================ -->
+<div class="page">
+  <div class="ph">
+    <h1>Trang 2 — Pitch "Kết luận trước" &amp; RACI Matrix<br><span>Đối tượng pitch: S1 — Trưởng khoa Cấp cứu, Bệnh viện A</span></h1>
+    <div class="meta">
+      <b>Nhóm JCungDuoc</b><br>MedTriage AI · 29/08/2026<br>
+      Bản cuối = tổng hợp 3 bản viết lại cá nhân<br>(Việt · Linh · Hưng)
+    </div>
+  </div>
+
+  <h2>1. Pitch — Conclusion First</h2>
+  <div class="pitch">
+    <div class="prow"><div class="pl">Kết luận</div><div class="pv">
+      <b>Đề nghị khoa cho MedTriage AI chạy shadow mode 2 tuần, ca trực ngày 7h–15h, mục tiêu 200 ca.</b>
+      AI <b>không</b> hiển thị bậc ưu tiên cho bất kỳ ai; nó chỉ sinh phiếu SBAR song song để khoa đối chiếu sau ca trực.
+      Không đổi quy trình tiếp nhận, không nối vào HIS, không cần chữ ký của phòng tài chính và không tốn ngân sách của khoa.
+    </div></div>
+    <div class="prow"><div class="pl">Lý do 1</div><div class="pv">
+      Nút thắt của khoa nằm ở <b>thời gian tiếp nhận</b>, không nằm ở quyết định lâm sàng. MedTriage chỉ nhận đúng phần trước quyết định:
+      hỏi triệu chứng, soi red flag, viết SBAR. <b>Điều dưỡng vẫn là người ký và người quyết định</b> — ranh giới này nhóm đã chốt từ Day 22 và không đổi.
+    </div></div>
+    <div class="prow"><div class="pl">Lý do 2</div><div class="pv">
+      Shadow mode làm <b>rủi ro lâm sàng của hai tuần này bằng 0 theo thiết kế</b>, chứ không bằng lời hứa: đầu ra của AI không đi tới người ra quyết định,
+      nên không tồn tại đường nào để AI gây under-triage trong giai đoạn đo.
+    </div></div>
+    <div class="prow"><div class="pl">Lý do 3</div><div class="pv">
+      Khoa nhận được thứ hiện chưa ai có: <b>200 ca đo thật</b> về tỉ lệ thông tin AI thu đủ (containment) và tỉ lệ bỏ sót dấu hiệu nặng (under-triage)
+      <b>của chính khoa mình</b> — và giữ được số đó <b>kể cả khi khoa quyết định dừng</b>.
+    </div></div>
+    <div class="prow"><div class="pl">Bằng chứng</div><div class="pv">
+      <b>Có thật:</b> mô hình kinh tế đã dựng đủ và <b>kiểm chứng ngược bằng script — 22/22 phép kiểm tra khớp</b> (workbook Day 25 + <span style="font-family:Consolas,monospace">verify_thresholds.py</span> Day 26):
+      giá 6.000.000 ₫/tháng + 13.000 ₫/ca, chi phí AI 2.307 ₫/ca, gross margin mô hình 71,8%, breakeven containment 55,1%. &nbsp;
+      <b>Luật an toàn viết trước khi chạy:</b> R-03 — under-triage &gt;3,0% trong 1 tuần đo thì tắt đề xuất bậc ưu tiên trong 24h; cổng ngày 30 cố ý là cổng <i>học</i>, không gắn doanh thu.<br>
+      <b>Điều nhóm CHƯA có, nói trước:</b> containment 78% là <b>ước tính dựng từ dưới lên, chưa từng đo trên ca thật</b>; 4/8 đèn dashboard đang ghi "chưa đo";
+      sản phẩm <b>chưa chạy ca thật nào</b>. <b>Chính vì vậy đề nghị là shadow mode, không phải triển khai.</b>
+    </div></div>
+    <div class="prow"><div class="pl">Small ask</div><div class="pv">
+      <b>Xin đúng hai thứ:</b> (1) <b>45 phút</b> với một điều dưỡng trưởng ca để chốt luồng đặt kiosk ở hàng chờ;
+      (2) chữ ký đồng ý cho <b>2 tuần shadow ở ca trực ngày, bắt đầu 15/09/2026</b>. Không hợp đồng, không tài khoản HIS, không thay đổi phần mềm của khoa.
+    </div></div>
+  </div>
+
+  <h2>2. Phản biện có khả năng xảy ra nhất — và cách xử lý</h2>
+  <div class="two">
+    <div class="box warn" style="margin-bottom:0">
+      <div class="bt">Phản biện</div>
+      <span class="kv" style="font-size:7.2pt">“<b>AI chưa đủ đáng tin để đụng vào bệnh nhân cấp cứu. Nếu nó bỏ sót một ca nặng thì ai chịu trách nhiệm?</b>”</span>
+      <div style="margin-top:1.2mm; font-size:6.5pt; color:#8a5b00">
+        Đây là phản biện nhóm chọn vì nó đúng và vì nhóm <b>không có số đo nào để bác lại</b> — mọi câu trả lời phải dựa vào thiết kế và vào luật dừng, không dựa vào ý kiến.
+      </div>
+    </div>
+    <div class="box" style="margin-bottom:0">
+      <div class="bt">Trả lời — bằng chứng &amp; hành động giảm rủi ro</div>
+      <ol class="tight" style="font-size:6.8pt">
+        <li><b>Trong 2 tuần shadow, không có đường nào để AI gây under-triage</b> — đầu ra không tới người ra quyết định. Rủi ro cần bàn là rủi ro <i>sau</i> shadow; nhóm đề nghị <b>đo nó trước rồi mới bàn</b>.</li>
+        <li><b>Trách nhiệm pháp lý không đổi:</b> phiếu SBAR chỉ có giá trị khi điều dưỡng ký. Đây là ràng buộc nhóm tự đặt từ Day 22, cùng với kết luận <b>conditional-go</b> và <b>5 release blocker</b> chưa gỡ.</li>
+        <li><b>Có luật dừng viết sẵn, không phải viết sau khi có sự cố:</b> R-03 (under-triage &gt;3,0% → tắt đề xuất bậc ưu tiên trong 24h) và R-02 (containment &lt;55,1% ba tuần liên tiếp → dừng toàn bộ bán hàng 30 ngày).</li>
+        <li><b>Số đo do khoa giữ.</b> Nếu khoa dừng ở bất kỳ ngày nào, nhóm bàn giao toàn bộ ca đã gán nhãn cho khoa và không giữ bản sao có PII.</li>
+        <li><b>Nhóm không xin niềm tin, nhóm xin 200 ca</b> để thay ước tính bằng số đo.</li>
+      </ol>
+    </div>
+  </div>
+
+  <h2>3. RACI Matrix — 6 công việc quan trọng của 1–2 tháng tới</h2>
+  <table>
+    <thead><tr>
+      <th style="width:27%">Công việc (1–2 tháng tới)</th>
+      <th class="c" style="width:8%">Việt<br><span style="font-weight:400">AI Product Owner</span></th>
+      <th class="c" style="width:8%">Linh<br><span style="font-weight:400">Clinical Safety &amp; Evals</span></th>
+      <th class="c" style="width:8%">Hưng<br><span style="font-weight:400">AI / Platform Eng</span></th>
+      <th class="c" style="width:8%">S5<br><span style="font-weight:400">Mentor</span></th>
+      <th class="c" style="width:9%">S1<br><span style="font-weight:400">Trưởng khoa CC</span></th>
+      <th class="c" style="width:8%">S4<br><span style="font-weight:400">CNTT / HIS</span></th>
+      <th style="width:24%">Ghi chú — vì sao A là người này</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td><b>T1.</b> Chốt phạm vi shadow pilot &amp; thuyết phục BV A (gửi đề nghị, họp điều dưỡng trưởng, lấy đồng ý)</td>
+        <td class="c"><span class="raci ra">A</span><span class="raci rr">R</span></td>
+        <td class="c"><span class="raci rc">C</span></td>
+        <td class="c"><span class="raci ri">I</span></td>
+        <td class="c"><span class="raci rc">C</span></td>
+        <td class="c"><span class="raci rc">C</span></td>
+        <td class="c"><span class="raci ri">I</span></td>
+        <td>Việt là người duy nhất có quan hệ với S1 và S5. Đội 3 người nên R ≡ A ở việc đối ngoại; bù lại <b>mentor là C bắt buộc</b> trước khi bản đề nghị được gửi đi.</td>
+      </tr>
+      <tr>
+        <td><b>T2.</b> Dựng kiosk nhập liệu tay ở hàng chờ + pipeline khử PII trong VPC bệnh viện</td>
+        <td class="c"><span class="raci ri">I</span></td>
+        <td class="c"><span class="raci rc">C</span></td>
+        <td class="c"><span class="raci ra">A</span><span class="raci rr">R</span></td>
+        <td class="c"><span class="raci ri">I</span></td>
+        <td class="c"><span class="raci ri">I</span></td>
+        <td class="c"><span class="raci rc">C</span></td>
+        <td>Nếu dữ liệu rời VPC mà chưa khử PII thì hỏng cả pilot lẫn quan hệ với S4. Hưng là người viết đường dữ liệu nên chịu trách nhiệm cuối.</td>
+      </tr>
+      <tr>
+        <td><b>T3.</b> Chuẩn bị dữ liệu: 30 golden cases có nhãn do người hành nghề y chốt + bộ nhãn 420 ca</td>
+        <td class="c"><span class="raci rc">C</span></td>
+        <td class="c"><span class="raci ra">A</span></td>
+        <td class="c"><span class="raci rr">R</span></td>
+        <td class="c"><span class="raci ri">I</span></td>
+        <td class="c"><span class="raci rc">C</span></td>
+        <td class="c"><span class="raci ri">I</span></td>
+        <td><b>R và A tách:</b> Hưng dựng bộ dữ liệu và công cụ gán nhãn, Linh chịu trách nhiệm cuối về <i>nhãn có đúng lâm sàng không</i>.</td>
+      </tr>
+      <tr>
+        <td><b>T4.</b> Kiểm thử an toàn: đo under-triage &amp; containment, chạy eval trước mỗi lần release</td>
+        <td class="c"><span class="raci ri">I</span></td>
+        <td class="c"><span class="raci ra">A</span></td>
+        <td class="c"><span class="raci rr">R</span></td>
+        <td class="c"><span class="raci rc">C</span></td>
+        <td class="c"><span class="raci rc">C</span></td>
+        <td class="c"><span class="raci ri">I</span></td>
+        <td><b>R và A tách:</b> Hưng chạy eval harness, Linh chịu trách nhiệm cuối về ngưỡng an toàn và về việc kích hoạt R-03.</td>
+      </tr>
+      <tr>
+        <td><b>T5.</b> Vận hành shadow pilot 2 tuần tại khoa (uptime kiosk, thu ca, trực hỗ trợ tại chỗ)</td>
+        <td class="c"><span class="raci rr">R</span></td>
+        <td class="c"><span class="raci rr">R</span></td>
+        <td class="c"><span class="raci ra">A</span></td>
+        <td class="c"><span class="raci ri">I</span></td>
+        <td class="c"><span class="raci rc">C</span></td>
+        <td class="c"><span class="raci ri">I</span></td>
+        <td>Cả ba cùng trực, nhưng chỉ một người chịu trách nhiệm cuối nếu ca bị mất hoặc kiosk chết giữa ca — đó là người sở hữu hạ tầng.</td>
+      </tr>
+      <tr>
+        <td><b>T6.</b> Quyết định GO / FIX tại cổng gác ngày 30 (27/09/2026) và kích hoạt luật dừng R-02 / R-03 nếu chạm ngưỡng</td>
+        <td class="c"><span class="raci ra">A</span><span class="raci rr">R</span></td>
+        <td class="c"><span class="raci rc">C</span></td>
+        <td class="c"><span class="raci rc">C</span></td>
+        <td class="c"><span class="raci rc">C</span></td>
+        <td class="c"><span class="raci rc">C</span></td>
+        <td class="c"><span class="raci ri">I</span></td>
+        <td>Quyết định release thuộc về người sở hữu mô hình kinh tế và cổng gác. Bắt buộc có <b>người ngoài đội dự</b> (S5 hoặc S6) để chống tự chấm tự duyệt.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box" style="margin-top:1.6mm">
+    <div class="bt">Kiểm tra RACI</div>
+    <span class="kv"><b>6/6 hàng có đúng 1 A</b>, không hàng nào hai A, không hàng nào thiếu A. &nbsp;•&nbsp;
+    <b>Phân bố A cân:</b> Việt T1+T6 (đối ngoại và quyết định) · Linh T3+T4 (an toàn lâm sàng) · Hưng T2+T5 (hạ tầng và vận hành) — không dồn hết A về trưởng nhóm.
+    &nbsp;•&nbsp; <b>Tách được R khỏi A ở 3/6 hàng</b> (T3, T4, T5). Ba hàng còn lại để R ≡ A vì đội chỉ có 3 người và việc đó thực tế chỉ một người làm được —
+    đúng rule-of-thumb "team rất nhỏ thì một người có thể vừa R vừa A"; nhóm bù bằng cách <b>bắt buộc có C là người ngoài đội</b> ở cả T1 và T6, để không có việc nào vừa tự làm vừa tự duyệt kín.
+    &nbsp;•&nbsp; <b>Nối với Trang 1:</b> S1, S4, S5 — ba stakeholder ưu tiên và Blocker của Trang 1 — đều là cột thật trong ma trận này, không phải tên nhắc cho đủ.</span>
+  </div>
+
+  <div class="pf"><span class="gate">GATE 2 ✔ Pitch có kết luận trước + bằng chứng (kèm phần chưa có) + small ask · 1 phản biện có cách xử lý · RACI 6 việc, mỗi việc đúng 1 A</span><div class="row"><span>MedTriage AI · Nhóm JCungDuoc · Day 27 — AI Team Lab</span><span>Trang 2 / 4</span></div></div>
+</div>
+
+<!-- ============================ PAGE 3 ============================ -->
+<div class="page">
+  <div class="ph">
+    <h1>Trang 3 — AI Team Design<br><span>Cấu trúc · Core Roles · Capability Gap · Priority Resourcing</span></h1>
+    <div class="meta">
+      <b>Nhóm JCungDuoc</b><br>MedTriage AI · 29/08/2026<br>
+      Quy mô hiện tại <b>3 người</b> · 1 sản phẩm · 0 khách hàng đang chạy
+    </div>
+  </div>
+
+  <h2>1. Team Architecture — chọn Embedded</h2>
+  <table style="margin-bottom:1.6mm">
+    <thead><tr><th style="width:14%">Mô hình</th><th style="width:30%">Bản chất</th><th style="width:14%" class="c">Chọn?</th><th style="width:42%">Lý do với quy mô và giai đoạn hiện tại</th></tr></thead>
+    <tbody>
+      <tr><td><b>Centralized</b></td><td>Một nhóm AI trung tâm phục vụ nhiều sản phẩm / nhiều team</td><td class="c"><span class="b no">Không</span></td>
+          <td>Nhóm chỉ có <b>một sản phẩm</b>. Một hub trung tâm phục vụ đúng một team là chi phí điều phối không đổi lấy gì.</td></tr>
+      <tr><td><b>Hybrid</b></td><td>Có hub AI chung, đồng thời có người AI nhúng vào từng team sản phẩm</td><td class="c"><span class="b neu">Chưa</span></td>
+          <td>Hybrid chỉ có nghĩa khi có năng lực <i>dùng lại được</i> giữa nhiều nơi. Nhóm sẽ chuyển sang Hybrid khi đạt <b>≥3 bệnh viện và ≥6 người</b> — lúc đó tách hub cho <b>eval</b> và <b>connector HL7 dùng lại được</b> (đúng nhánh hành động của luật R-05).</td></tr>
+      <tr><td><b>Embedded</b></td><td>Năng lực AI nằm trực tiếp trong team sản phẩm</td><td class="c"><span class="b up">CHỌN</span></td>
+          <td><b>Cả ba người đều phải đứng cạnh chính use case.</b> Ở sản phẩm này, quyết định khó nhất — "thế nào là một red flag" — không tách rời khỏi lâm sàng, nên không thể đẩy sang một hub ở xa. Với 3 người và một khoa cấp cứu, mọi lớp trung gian đều làm chậm vòng học.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>2. Core Roles — vai trò cần NGAY ở giai đoạn này</h2>
+  <table style="margin-bottom:1.4mm">
+    <thead><tr><th style="width:20%">Core Role</th><th style="width:16%">Ai đảm nhiệm</th><th style="width:28%">Sở hữu cái gì</th><th style="width:36%">Vì sao cần ngay (không phải "có thì tốt")</th></tr></thead>
+    <tbody>
+      <tr><td><b>AI Product Owner / Founder</b></td><td>Lê Hoàng Việt<br><span style="font-size:6.2pt;color:#5b7285">2A202601543</span></td>
+          <td>Mô hình kinh tế, 3 cổng gác, quan hệ stakeholder, quyết định release</td>
+          <td>Cổng gác ngày 30/60/90 và quyết định GO/FIX/KILL phải có <b>một người chịu trách nhiệm cuối</b>. Nếu không, luật dừng sẽ không bao giờ được ai bấm.</td></tr>
+      <tr><td><b>Clinical Safety &amp; Evals Lead</b></td><td>Hồ Phạm Đức Linh<br><span style="font-size:6.2pt;color:#5b7285">2A202601533</span></td>
+          <td>Định nghĩa red flag, bộ golden cases, ngưỡng under-triage, quyền bấm R-03</td>
+          <td><b>Không đo được under-triage thì không được phép chạm tới bệnh nhân.</b> Đây là release blocker số 1 còn lại từ Day 22, và là đèn L-03 đang ghi "chưa đo".</td></tr>
+      <tr><td><b>AI / Platform Engineer</b></td><td>Trần Vương Hưng<br><span style="font-size:6.2pt;color:#5b7285">2A202601789</span></td>
+          <td>Kiosk, VPC, khử PII, pipeline dữ liệu, eval harness, uptime pilot</td>
+          <td>Không có đường dữ liệu chạy được thì <b>không tồn tại ca nào để đo</b> — cổng ngày 30 không có input.</td></tr>
+      <tr style="background:#fff5f4"><td><b>Domain Expert lâm sàng</b><br><span class="b block">CHƯA CÓ</span></td><td style="color:#c0392b"><b>Trống — đây là gap G-1</b></td>
+          <td>Chốt phác đồ ưu tiên, định nghĩa red flag, ký nhận nhãn của bộ eval</td>
+          <td><b>Không ai trong ba người là người hành nghề y.</b> Nhãn do người không hành nghề chốt thì bộ eval không có giá trị, và cổng ngày 30 sẽ đo bằng thước do chính nhóm tự đúc.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="box" style="margin-bottom:2mm">
+    <div class="bt">Extended — vai trò để dành, cố ý CHƯA lập bây giờ</div>
+    <span class="kv"><b>Forward Deployed Engineer</b> (mở khi ≥3 bệnh viện chạy song song) · <b>MLOps / Evals chuyên trách</b> (khi eval phải chạy hằng ngày trên nhiều phiên bản) ·
+    <b>Legal / Compliance dữ liệu y tế</b> (khi ký hợp đồng thật với S2, không cần cho shadow) · <b>UX cho kiosk tiếng Việt, người cao tuổi</b> (khi containment đã được đo và trở thành thứ cần tối ưu).
+    <b>Nguyên tắc nhóm tự đặt:</b> mỗi chức danh thêm vào phải trả lời được câu "nó gỡ blocker nào của cổng gác gần nhất?" — bốn vai trò trên đều <i>không</i> gỡ được cổng ngày 30, nên chưa lập.</span>
+  </div>
+
+  <h2>3. Priority Resourcing — ba capability gap quan trọng nhất</h2>
+  <table>
+    <thead><tr><th style="width:22%">Capability gap</th><th style="width:15%">Cách bổ sung</th><th style="width:45%">Vì sao chọn cách này</th><th style="width:18%">Khi nào cần</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>G-1 · Chuyên môn lâm sàng cấp cứu</b><br>chốt red flag, phác đồ ưu tiên và nhãn đúng cho 30 golden cases</td>
+        <td><span class="b champ">PARTNER</span><br><span style="font-size:6.3pt">Thỏa thuận cố vấn với 1 điều dưỡng trưởng + 1 bác sĩ khoa cấp cứu BV A, trả công theo buổi gán nhãn</span></td>
+        <td>Ở giai đoạn MVP nhóm <b>không có tiền và cũng không có việc full-time</b> cho một bác sĩ — Hire là sai kích cỡ. Outsource cho một đơn vị y tế ngoài cũng sai, vì
+            <b>người chốt nhãn nên là người của chính khoa sẽ dùng sản phẩm</b>: cùng phác đồ, cùng loại bệnh nhân, cùng áp lực ca trực.
+            Partner ở đây lấp gap <i>và</i> đồng thời chuyển S1/S3 từ trung lập thành người trong cuộc — <b>một hành động giải quyết hai việc</b> (xem Trang 1).</td>
+        <td><b>Trước shadow pilot</b><br>hạn <b>12/09/2026</b><br><span style="font-size:6.3pt">Không có G-1 thì T3 không khởi động được</span></td>
+      </tr>
+      <tr>
+        <td><b>G-2 · Tích hợp HL7 / HIS và bảo mật dữ liệu bệnh viện</b><br>connector và mức khử PII đạt yêu cầu phòng CNTT</td>
+        <td><span class="b supp">OUTSOURCE</span><br><span style="font-size:6.3pt">Thuê 1 kỹ sư tích hợp HL7 theo gói cho phần connector; Hưng giữ quyền review và nhóm giữ quyền sở hữu mã</span></td>
+        <td>Đây là năng lực <b>dùng theo đợt chứ không liên tục</b>: nối xong một bệnh viện thì gần như không đụng tới cho đến bệnh viện sau.
+            Tuyển full-time sẽ đẩy <b>chi phí triển khai ÷ ACV vượt trần 24,4%</b> (phép tính MH-03) — đúng con số mà cổng ngày 60 đang gác.
+            Partner với nhà cung cấp HIS (S7) là lựa chọn thứ hai, nhưng làm nhóm mất quyền chủ động về lịch. Giữ quyền sở hữu mã để <b>lần thứ hai rẻ hơn lần thứ nhất</b>.</td>
+        <td><b>Sau cổng ngày 30, trước cổng ngày 60 (27/10/2026)</b><br><span style="font-size:6.3pt">Shadow pilot cố ý thiết kế để <b>không</b> cần HIS</span></td>
+      </tr>
+      <tr>
+        <td><b>G-3 · Evals / quality evaluation có kỷ luật</b><br>bộ golden cases, chạy eval mỗi release, đo under-triage &amp; over-triage</td>
+        <td><span class="b champ">PARTNER</span> — chỉ cho <b>vòng thẩm định độc lập</b><br><span style="font-size:6.3pt"><b>Không Hire, không Outsource</b> phần chạy eval hằng ngày — nâng nội bộ (Linh)</span></td>
+        <td><b>Đây là năng lực lõi, thuê ngoài là tự bịt mắt mình.</b> Nếu người ngoài chạy eval, đội mất luôn khả năng tự biết mình sai ở đâu và mất phản xạ bấm luật dừng.
+            Cái <i>phải</i> đến từ bên ngoài chỉ là <b>tính độc lập của người chấm</b> — nên Partner đúng một việc: mentor (S5) và cố vấn tài chính (S6) dự cổng gác với tư cách người ngoài đội.
+            Phần năng lực còn lại nâng nội bộ, và đó chính là <b>hành động G-2 của Growth Plan Trang 4</b>.</td>
+        <td>Bộ eval chạy được <b>trước 19/09/2026</b>; vòng thẩm định độc lập <b>trước cổng ngày 90 (26/11/2026)</b></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box dark" style="margin-top:2mm">
+    <div class="bt">4. Squad Goal</div>
+    <div style="font-size:8.4pt; line-height:1.45; margin-top:.6mm">
+      “Squad MedTriage của chúng tôi sở hữu <b>toàn bộ đường đi của một ca cấp cứu, từ lúc bệnh nhân ngồi xuống hàng chờ đến lúc điều dưỡng ký phiếu SBAR</b>,
+      và chịu trách nhiệm đưa <b>tỉ lệ containment cùng tỉ lệ under-triage</b> từ <b>ước tính dựng trên giấy (78% / chưa đo)</b>
+      đến <b>số đo trên ≥800 ca thật tại một khoa cấp cứu, trước 27/09/2026</b>.”
+    </div>
+  </div>
+
+  <div class="box" style="margin-top:1.4mm; margin-bottom:0">
+    <div class="bt">Nhóm cố ý KHÔNG làm gì ở Trang này</div>
+    <span class="kv">Không thêm chức danh nào cho đẹp tổ chức đồ. Ba người giữ đúng ba vai, vai thứ tư <b>bỏ trống và gọi tên đúng là gap</b> thay vì chia nhau gánh rồi coi như đã có.
+    Cũng không viết "cần tuyển thêm người": trong ba gap thì <b>không gap nào được giải bằng Hire</b> ở giai đoạn này — hai gap dùng Partner, một gap dùng Outsource theo gói, và phần lõi thì nâng nội bộ.</span>
+  </div>
+
+  <div class="pf"><span class="gate">GATE 3 ✔ 1 architecture có lý do · Core Roles đúng giai đoạn · 3 capability gap · Priority Resourcing nói rõ Hire/Outsource/Partner kèm lý do và mốc thời gian</span><div class="row"><span>MedTriage AI · Nhóm JCungDuoc · Day 27 — AI Team Lab</span><span>Trang 3 / 4</span></div></div>
+</div>
+
+<!-- ============================ PAGE 4 ============================ -->
+<div class="page">
+  <div class="ph">
+    <h1>Trang 4 — Team Health &amp; Growth Plan 30 ngày<br><span>Chu kỳ: 29/08/2026 → 28/09/2026 · chốt ngay trước cổng gác ngày 30 (27/09)</span></h1>
+    <div class="meta">
+      <b>Nhóm JCungDuoc</b><br>MedTriage AI · 29/08/2026<br>
+      Chấm cá nhân trước, không thảo luận<br>rồi mới so điểm
+    </div>
+  </div>
+
+  <h2>1. Team Health — mỗi người tự chấm 1–5, chấm riêng trước khi so</h2>
+  <div class="two" style="grid-template-columns: 1.15fr 1fr">
+    <table>
+      <thead><tr><th style="width:30%">Khía cạnh</th><th class="c" style="width:11%">Việt</th><th class="c" style="width:11%">Linh</th><th class="c" style="width:11%">Hưng</th>
+        <th class="c" style="width:12%">Trung bình</th><th class="c" style="width:11%">Chênh</th><th style="width:14%"></th></tr></thead>
+      <tbody>
+        <tr><td><b>Chất lượng AI</b><br><span style="font-size:6.2pt;color:#5b7285">output đủ tốt và ổn định chưa?</span></td>
+            <td class="c">4</td><td class="c">2</td><td class="c">3</td><td class="c"><b>3,0</b></td>
+            <td class="c"><b style="color:#c0392b">2</b> ⚑</td><td><span class="bar"><i class="mid" style="width:60%"></i></span></td></tr>
+        <tr><td><b>Tiến độ</b><br><span style="font-size:6.2pt;color:#5b7285">có làm đúng cam kết không?</span></td>
+            <td class="c">4</td><td class="c">3</td><td class="c">3</td><td class="c"><b>3,3</b></td>
+            <td class="c">1</td><td><span class="bar"><i class="mid" style="width:66%"></i></span></td></tr>
+        <tr><td><b>Tinh thần team</b><br><span style="font-size:6.2pt;color:#5b7285">dám nói vấn đề, phối hợp tốt?</span></td>
+            <td class="c">4</td><td class="c">4</td><td class="c">5</td><td class="c"><b>4,3</b></td>
+            <td class="c">1</td><td><span class="bar"><i style="width:86%"></i></span></td></tr>
+        <tr style="background:#fff5f4"><td><b>Tốc độ ra sản phẩm</b><br><span style="font-size:6.2pt;color:#5b7285">bao lâu để user thử được một thay đổi?</span></td>
+            <td class="c">2</td><td class="c">2</td><td class="c">3</td><td class="c"><b style="color:#c0392b">2,3</b> ⬇</td>
+            <td class="c">1</td><td><span class="bar"><i class="low" style="width:46%"></i></span></td></tr>
+      </tbody>
+    </table>
+    <div>
+      <div class="box warn" style="margin-bottom:1.4mm">
+        <div class="bt">Khía cạnh thấp nhất — Tốc độ ra sản phẩm (2,3/5)</div>
+        <span class="kv">Cả ba chấm thấp vì cùng một sự thật: <b>đến hôm nay sản phẩm chưa chạy một ca thật nào</b>.
+        Mọi thay đổi của 5 ngày qua chỉ đi từ tài liệu này sang tài liệu khác. Với sản phẩm này, "tốc độ ra sản phẩm" phải đo bằng
+        <b>số ngày từ một thay đổi đến một ca cấp cứu thật dùng nó</b> — hiện là <b>vô hạn</b>.</span>
+      </div>
+      <div class="box" style="margin-bottom:0">
+        <div class="bt">Chênh lệch lớn nhất — Chất lượng AI: Việt 4 vs Linh 2</div>
+        <span class="kv">Hỏi ra thì hai người <b>đang chấm hai thứ khác nhau</b>.
+        <b>Việt chấm 4</b> vì nhìn chất lượng <i>bản thiết kế</i>: mô hình kinh tế kiểm chứng ngược 22/22, dashboard 8 đèn đủ ngưỡng, 4 luật dừng.
+        <b>Linh chấm 2</b> vì nhìn chất lượng <i>đầu ra lâm sàng</i>: chưa có bộ eval nào, chưa ca thật nào, under-triage chưa đo.
+        <b>Cả hai đều đúng về thứ mình nhìn — và đó mới là vấn đề: đội đang nhầm “tài liệu chặt” với “sản phẩm tốt”.</b>
+        Đây là phát hiện quan trọng nhất của Phase 4, và nó khớp đúng điểm yếu nhóm đã tự ghi ở Day 26: <i>“dashboard của một sản phẩm chưa chạy ca thật nào”</i>.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="box" style="border-left-color:#c0392b; background:#fff5f4; margin-top:1.6mm">
+    <div class="bt" style="color:#c0392b">Vấn đề ưu tiên — nếu không xử lý sẽ trực tiếp làm hỏng milestone tiếp theo</div>
+    <span class="kv"><b>Đội không có đường đo chất lượng đầu ra, nên tốc độ ra sản phẩm đang bằng 0 ca thật.</b>
+    Cổng gác ngày 30 (27/09/2026) đòi <b>≥800 ca hoàn tất</b> với containment <b>≥70%</b>. Hôm nay 29/08 nhóm chưa có ca nào, chưa có bộ eval, chưa có chữ ký cho shadow pilot — <b>còn 29 ngày</b>.
+    <b>Nói thẳng một rủi ro:</b> nếu shadow bắt đầu 15/09 thì chỉ còn 12 ngày thu ca, tức cần ~67 ca/ngày. Nhóm <b>không</b> xử lý bằng cách nới định nghĩa “ca hoàn tất” cho số đẹp hơn;
+    nhóm sẽ <b>báo cáo lại quy mô mẫu thật tại cổng</b> và chấp nhận kết luận FIX nếu mẫu chưa đủ — đúng nguyên tắc đã tự đặt ở Day 26: không nới định nghĩa, không giảm giá, không tuyển thêm sales để đẩy vào một phễu đang tắc.</span>
+  </div>
+
+  <h2>2. Competency cần nâng — dùng khung L1 / L2 / L3</h2>
+  <table style="margin-bottom:1.6mm">
+    <thead><tr><th style="width:17%">Role được chọn</th><th style="width:19%">Mức hiện tại (gần nhất)</th><th style="width:20%">Competency cần nâng tiếp theo</th><th style="width:44%">Hành động thực hành trong 30 ngày</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>Clinical Safety &amp; Evals Lead</b><br>Hồ Phạm Đức Linh</td>
+        <td><b>Gần L2 — AI Practitioner</b><br><span style="font-size:6.3pt">Bằng chứng: ở Day 22 đã tự dựng harm map 10 dòng đủ 7 failure layer, 8 gap và 5 release blocker cho một copilot chẩn đoán — <b>nhưng chưa từng chạy một eval có số</b>.</span></td>
+        <td><b>Evals / quality evaluation</b><br><span style="font-size:6.3pt">Chuyển từ “biết rủi ro nằm ở đâu” sang “đo được rủi ro đó bằng số, lặp lại được”.</span></td>
+        <td>Xây bộ <b>30 golden cases</b> có nhãn do điều dưỡng trưởng BV A chốt và ký nhận; dựng lệnh <b>một dòng</b> chạy eval trước mỗi lần release;
+            xuất bảng <b>under-triage / over-triage</b> theo từng lần chạy. Đạt đủ L2 và mở đường lên L3 — AI Builder khi bộ eval trở thành cổng chặn release chứ không phải báo cáo tham khảo.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>3. Growth Plan 30 ngày — tối đa 3 hành động (29/08 → 28/09/2026)</h2>
+  <table>
+    <thead><tr><th style="width:20%">Vấn đề</th><th style="width:31%">Hành động 30 ngày</th><th style="width:12%">Owner</th><th style="width:13%">Deadline</th><th style="width:24%">Dấu hiệu hoàn thành (kiểm được)</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>G-1.</b> Chưa có chữ ký nào cho ca thật → tốc độ ra sản phẩm 2,3/5 và cổng ngày 30 không có input</td>
+        <td>Gửi bản đề nghị shadow 1 trang cho Trưởng khoa Cấp cứu BV A (<b>mentor review trước khi gửi</b>), họp 45 phút với điều dưỡng trưởng ca, chốt ngày bắt đầu và ca trực.
+            Nếu bị từ chối, gửi tiếp bệnh viện thứ hai trong cùng tuần thay vì chờ.</td>
+        <td><b>Lê Hoàng Việt</b><br><span style="font-size:6.2pt;color:#5b7285">= A của T1 trong RACI</span></td>
+        <td>Gửi <b>03/09</b><br>Chốt ngày bắt đầu <b>12/09/2026</b></td>
+        <td>Có email hoặc biên bản đồng ý <b>ghi rõ ngày bắt đầu và ca trực</b>. Nếu bị từ chối: có văn bản lý do <b>và</b> tên bệnh viện thứ hai đã gửi đề nghị.</td>
+      </tr>
+      <tr>
+        <td><b>G-2.</b> Chênh 2 điểm về “chất lượng AI” vì không ai trong đội đo được đầu ra lâm sàng</td>
+        <td>Xây <b>30 golden cases</b> (nhãn do điều dưỡng trưởng BV A chốt và ký nhận), dựng lệnh <span style="font-family:Consolas,monospace">make eval</span> chạy trước mỗi lần release,
+            báo cáo tỉ lệ <b>under-triage / over-triage</b> sau mỗi lần chạy.</td>
+        <td><b>Hồ Phạm Đức Linh</b><br><span style="font-size:6.2pt;color:#5b7285">= A của T3 và T4 trong RACI</span></td>
+        <td><b>19/09/2026</b><br><span style="font-size:6.2pt;color:#5b7285">trước cổng ngày 30 đúng 8 ngày</span></td>
+        <td><span style="font-family:Consolas,monospace">make eval</span> chạy được trên máy của <b>cả ba người</b> và in ra bảng 30 ca kèm 2 tỉ lệ;
+            <b>≥25/30 ca có nhãn do người hành nghề y ký nhận</b>.</td>
+      </tr>
+      <tr>
+        <td><b>G-3.</b> Đội tự đặt ngưỡng, tự đo, tự báo cáo — không ai ngoài kiểm; đúng điểm yếu nhóm đã tự nêu ở Day 26</td>
+        <td>Đặt nhịp <b>review 20 phút mỗi thứ Sáu 20h</b>, mỗi buổi có <b>đúng một người ngoài đội</b> dự (mentor tuần lẻ, cố vấn tài chính tuần chẵn);
+            biên bản 5 dòng đẩy lên repo ngay sau buổi.</td>
+        <td><b>Trần Vương Hưng</b><br><span style="font-size:6.2pt;color:#5b7285">= A của T2 và T5 trong RACI</span></td>
+        <td>Buổi đầu <b>05/09</b><br>Đủ 4 buổi trước <b>28/09/2026</b></td>
+        <td><b>4 file biên bản</b> trong <span style="font-family:Consolas,monospace">docs/weekly/</span>, mỗi file có ngày, tên người ngoài đội đã dự và <b>đúng 1 quyết định</b> được chốt trong buổi.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box" style="margin-top:1.6mm; margin-bottom:0">
+    <div class="bt">Kiểm tra tính nhất quán giữa 4 trang</div>
+    <span class="kv">
+    <b>Trang 1 → Trang 2:</b> S1 là stakeholder ưu tiên số 1 của Trang 1, là đối tượng của Pitch, và là cột thật trong RACI; S5 và S4 cũng vậy. &nbsp;•&nbsp;
+    <b>Trang 3 → Trang 4:</b> gap <b>G-1 (chuyên môn lâm sàng, Partner)</b> chính là nguyên nhân của chênh lệch điểm “chất lượng AI”, và được xử lý bằng hành động <b>G-2</b> của Growth Plan;
+    gap <b>G-3 (evals)</b> nói rõ phần lõi nâng nội bộ và trỏ thẳng sang Growth Plan. &nbsp;•&nbsp;
+    <b>Trang 2 → Trang 4:</b> ba owner của Growth Plan là <b>đúng ba người đang giữ chữ A</b> trong RACI cho phần việc tương ứng — không giao việc cho người không chịu trách nhiệm.
+    &nbsp;•&nbsp; <b>Trang 4 → Trang 1:</b> hành động G-2 (mời điều dưỡng trưởng chốt nhãn, trả công theo buổi) chính là chiến lược thuyết phục S3 ở Trang 1 — <b>một hành động, hai mục tiêu</b>.</span>
+  </div>
+
+  <h2>4. Kỷ luật của kế hoạch — điều bị loại bỏ và điểm kiểm giữa kỳ</h2>
+  <div class="two" style="grid-template-columns:1.05fr 1fr">
+    <div class="box" style="margin-bottom:0">
+      <div class="bt">Bốn việc đã bị loại khỏi Growth Plan — và vì sao</div>
+      <span class="kv">Giới hạn 3 hành động buộc nhóm phải bỏ thứ gì đó. Bốn việc dưới đây <b>bị loại có lý do</b>, không phải quên:
+      <ol class="tight" style="margin-top:.8mm">
+        <li><b>“Tuyển thêm 1 AI Engineer”</b> — không gỡ được blocker nào của cổng ngày 30, và Trang 3 đã kết luận <b>không gap nào giải bằng Hire</b> ở giai đoạn này.</li>
+        <li><b>“Nối HL7 với HIS bệnh viện”</b> — thuộc cổng ngày 60. Kéo vào 30 ngày này là tự bắt mình phải xin S4 mở cửa <i>trước khi</i> có bất kỳ con số nào để thuyết phục.</li>
+        <li><b>“Cải thiện độ chính xác của model”</b> — chưa đo được thì không biết đang cải thiện cái gì. Việc này chỉ có nghĩa <b>sau</b> khi G-2 xong.</li>
+        <li><b>“Team cần giao tiếp tốt hơn”</b> — không kiểm được, nên không phải hành động. Hơn nữa tinh thần team đang là điểm <b>cao nhất (4,3/5)</b>: đây không phải chỗ đau.</li>
+      </ol></span>
+    </div>
+    <div class="box warn" style="margin-bottom:0">
+      <div class="bt">Kiểm giữa kỳ ngày 14 — 12/09/2026 · người giữ nhịp: Hưng</div>
+      <span class="kv">Kế hoạch 30 ngày thất bại lặng lẽ nếu chỉ kiểm ở ngày cuối. Nhóm chốt trước <b>ba dấu hiệu thất bại sớm</b> và phản ứng tương ứng, để khỏi phải tranh luận lúc đang hoảng:
+      <ul class="tight" style="margin-top:.8mm; list-style:none; padding-left:0">
+        <li><b>G-1</b> — nếu <i>chưa có ngày bắt đầu shadow được xác nhận</i> → gửi đề nghị cho <b>bệnh viện thứ hai ngay trong ngày</b>, không chờ hết 30 ngày mới thừa nhận là hỏng.</li>
+        <li><b>G-2</b> — nếu <i>chưa đạt ≥10/30 ca có nhãn được người hành nghề y ký nhận</i> → <b>cắt phạm vi xuống 20 golden cases</b> chứ không bỏ, và tuyệt đối không tự gán nhãn thay người hành nghề cho đủ số.</li>
+        <li><b>G-3</b> — nếu <i>đã lỡ một buổi review thứ Sáu</i> → chuyển sang <b>thứ Bảy cùng tuần</b>; dồn hai buổi vào một tức là bỏ một buổi.</li>
+      </ul></span>
+    </div>
+  </div>
+
+  <div class="pf"><span class="gate">GATE 4 ✔ đủ 4 khía cạnh có điểm cá nhân · 1 vấn đề ưu tiên · 1 competency cần nâng theo L1/L2/L3 · 3 hành động đủ owner + deadline + dấu hiệu hoàn thành</span><div class="row"><span>MedTriage AI · Nhóm JCungDuoc · Day 27 — AI Team Lab</span><span>Trang 4 / 4</span></div></div>
+</div>
+
+</body>
+</html>
